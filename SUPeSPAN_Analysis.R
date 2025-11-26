@@ -172,8 +172,9 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
         
         if(byReads_5p == TRUE){
 
-          message("Calculateing coverage by the 5' ends of reads")
-
+          message(paste0("Calculating coverage with 5' ends of first-mate reads for", " ", 
+                         tools::file_path_sans_ext(basename(bamFile)) ))
+          
           # calculate coverage at watson strand by 5' end of the first mate reads
           command_3 <- paste0(
             "/Applications/ngsAnalyser.app/Contents/Resources/app/samtools-1.13/samtools view -h -@ 8 -q 30 -F 3840 -f 64 -L %s %s |",
