@@ -513,8 +513,8 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
         }
         
         #
-        binSize <- paste0( "300_500" )
-        stepSize <- paste0( "10_50" )
+        binSize <- paste0( "300" )
+        stepSize <- paste0( "10" )
         
         StatDat <- rbind.data.frame(LeftLim, RightLim, paste0(LeadingAverage, "±", LeadingSd), paste0(LaggingAverage, "±", LaggingSd), 
                                     AveragingWindow, binSize, stepSize)
@@ -716,10 +716,7 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
         PeakList$oriCenter <- PeakList$BrDUSummit
       }
       #
-      #
-      message(paste0("calculating data and simulation results around fired replication origins"))
-      #
-      
+      ##
       Data_and_RanSamp <- function(expSamp){
         
         V <- "ip.score"
@@ -750,6 +747,11 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
         
         data <- {
           
+          
+          #
+          bold <- function(x) paste0("\033[1m", x, "\033[0m")
+          message(paste0("calculating actual and simulated read enrichments for ", bold(expSamp)))
+          #
           
           chrS <- paste0("chr", as.roman(1:16))
           ##
@@ -967,14 +969,20 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
           Averages_lead <- as.data.frame(matrix(0, ncol = NumberOfRepetitions, nrow = Total_NumberOfelements))
           Averages_bias <- as.data.frame(matrix(0, ncol = NumberOfRepetitions, nrow = Total_NumberOfelements))
           
+          # subtle reference line (e.g., 100 iterations)
+          cat(paste0("\n", "\033[31m", paste(rep("-", iterations), collapse=""), "\033[0m", "\r"))
+          flush.console()
           
           for(a in 1: NumberOfRepetitions){
+            
+            cat("\033[32m.\033[0m")
+            flush.console()
             
             Sampled.Elements <- list()
             
             for(j in 1:length(ChromLengths)){
               
-              print(paste("SAMPLE", "-", expSamp, ",", "Element", "-", unique(PeakList$name), ",", "Running simulation", a, "for chromosome", j))
+              # print(paste("SAMPLE", "-", expSamp, ",", "Element", "-", unique(PeakList$name), ",", "Running simulation", a, "for chromosome", j))
               
               if(Chrom_NumberOfelements[j] == 0){
                 SampElements <- NA
@@ -1178,6 +1186,8 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
             Averages_bias <- Averages_bias[,(dim(Averages_bias)[2]-NumberOfRepetitions+1):dim(Averages_bias)[2]]
             
           }
+          
+          cat("\n")
           
           #w2c
           W2C_RanSamp <- rowMeans(Averages_r)
