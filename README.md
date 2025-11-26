@@ -41,10 +41,10 @@ save the file named SUPeSPAN_Analysis.R in a suitable location in your work stat
 
 open Run_SUPeSPAN.R in Rstudio and edit as needed or open a new R script and then
 
-Source the analysis script
+# Source the analysis script
 source("path/to/SUPeSPAN_Analysis.R")
 
-Run the analysis with example files
+# Run the analysis with example files
           SUPeSPAN_Analysis( Input_R1 = "/path/to/Input_R1_001.fastq.gz",
                              Input_R2 = "/path/to/Input_R2_001.fastq.gz",
                              BrDU_R1 = "/path/to/BrDU_R1_001.fastq.gz",
