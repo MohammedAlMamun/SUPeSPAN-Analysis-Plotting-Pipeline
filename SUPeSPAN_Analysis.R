@@ -51,14 +51,14 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
     }
     
     #
-    message(paste0("Experiment: ", Pro_1))
+    message(paste0("✅ Experiment: ", Pro_1))
     #
     
     suppressWarnings(dir.create(paste0("~/Desktop/", Pro_1)))   #create directory named with the protein in the Desktop
     
     ## Quality check of fastqs'
     #
-    message("Running QC ...")
+    message("⏳ Running QC ...")
     #
     if(!dir.exists(paste0("~/Desktop/", Pro_1, "/", Pro_1, "_", "QR", ".html"))){
       
@@ -77,12 +77,14 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
     
     ## Run alignment
     #
-    message("Running alignments ...")
-    message("Reference yeast genome : S288C")
+    message("✅ Reference yeast genome : S288C")
+    message("⏳ Running alignments...")
     #
     if(!dir.exists(paste0("~/Desktop/", Pro_1, "/", "Bam"))){
       
       RunAlign <- function(File_R1, File_R2, SampName){
+        
+        message(paste0("➤ Running alignment for ", Pro_1, "_", SampName))
         
         tempdir(check = TRUE)
         
@@ -136,7 +138,7 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
     #
     ## Calculate genome-wide binned coverage
     #
-    message("Calculating read coverage ...")
+    message("⏳ Calculating read coverage ...")
     #
     bamFiles <- Sys.glob(paste0("~/Desktop/", Pro_1, "/", "Bam", "/", "*", ".bam"))
     
@@ -172,7 +174,7 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
         
         if(byReads_5p == TRUE){
 
-          message(paste0("Calculating coverage with 5' ends of first-mate reads for", " ", 
+          message(paste0("➤ Calculating coverage with 5' ends of first-mate reads for", " ", 
                          tools::file_path_sans_ext(basename(bamFile)) ))
           
           # calculate coverage at watson strand by 5' end of the first mate reads
@@ -240,7 +242,7 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
     
     ## Calculate Ratio
     #
-    message("Calculating enrichment ratios!")
+    message("⏳ Calculating enrichment ratios...")
     #
     if(!dir.exists(paste0("~/Desktop/", Pro_1, "/", "Ratios"))){
       
@@ -306,7 +308,7 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
     
     ## Define and process peaks
     #
-    message("Processing peaks ...")
+    message("⏳ Processing peaks ...")
     #
     if(!dir.exists(paste0("~/Desktop/", Pro_1, "/", "Peaks"))){
       
@@ -551,7 +553,7 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
     gc()
     
     #
-    message("Alignment & Primary Analysis complete!")
+    message("✅ Alignment & Primary Analysis complete!")
     #
   }
   
@@ -677,7 +679,7 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
           }
         }
         
-        message(paste("✅ Combined all data for", sample_id))
+        # message(paste("✅ Combined all data for", basename(Sample_1)))
         return(sample_data)
       }
       
@@ -970,7 +972,7 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
           Averages_bias <- as.data.frame(matrix(0, ncol = NumberOfRepetitions, nrow = Total_NumberOfelements))
           
           # subtle reference line (e.g., 100 iterations)
-          cat(paste0("\n", "\033[31m", paste(rep("-", iterations), collapse=""), "\033[0m", "\r"))
+          cat(paste0("\033[31m", paste(rep("-", iterations), collapse=""), "\033[0m", "\r"))
           flush.console()
           
           for(a in 1: NumberOfRepetitions){
@@ -1276,7 +1278,7 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
           }
         }
         
-        message(paste("✅ Combined peak files for", sample_id))
+        # message(paste0("✅ Combined peak files for " , basename(Sample_1)))
         return(sample_data)
       }
       
@@ -3072,15 +3074,15 @@ SUPeSPAN_Analysis <- function( Input_R1, Input_R2, BrDU_R1, BrDU_R2, ChIP_R1, Ch
         }
         
         #
-        PlotBoxes_inNorm_NPS(DataFile_ip = Lagging_Signal_NP_Data, DataFile_in = Lagging_Synthesis_NP_Data, PlotHeader = "Lagg_NP_Signal_Synthesis_data")
+        PlotBoxes_inNorm_NPS(DataFile_ip = Lagging_Signal_NP_Data, DataFile_in = Lagging_Synthesis_NP_Data, PlotHeader = "Lagg_Sig_Synth_data")
         PlotBoxes_dNorm_NPS(DataFile_ip = Lagging_Signal_NP_Data, SimuFile_ip = Lagging_Signal_NP_Simu, 
                             DataFile_in = Lagging_Synthesis_NP_Data, SimuFile_in = Lagging_Synthesis_NP_Simu,
-                            PlotHeader = "Lagg_NP_Signal_Synthesis_data_simu")
+                            PlotHeader = "Lagg_Sig_Synth_data_simu")
         
-        PlotBoxes_inNorm_NPS(DataFile_ip = Leading_Signal_NP_Data, DataFile_in = Leading_Synthesis_NP_Data, PlotHeader = "Lead_NP_Signal_Synthesis_data")
+        PlotBoxes_inNorm_NPS(DataFile_ip = Leading_Signal_NP_Data, DataFile_in = Leading_Synthesis_NP_Data, PlotHeader = "Lead_Sig_Synth_data")
         PlotBoxes_dNorm_NPS(DataFile_ip = Leading_Signal_NP_Data, SimuFile_ip = Leading_Signal_NP_Simu, 
                            DataFile_in = Leading_Synthesis_NP_Data, SimuFile_in = Leading_Synthesis_NP_Simu,
-                           PlotHeader = "Lead_NP_Signal_Synthesis_data_simu")
+                           PlotHeader = "Lead_Sig_Synth_data_simu")
         
         #
         
