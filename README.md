@@ -39,7 +39,7 @@ SUPeSPAN_Analysis(
 
 # save the file named SUPeSPAN_Analysis.R in a suitable location in your work station
 
-# open a new R script and then
+# open Run_SUPeSPAN.R in Rstudio and edit as needed or open a new R script and then
 
 # Source the analysis script
 source("path/to/SUPeSPAN_Analysis.R")
